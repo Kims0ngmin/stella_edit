@@ -135,58 +135,58 @@ void orb_extractor::extract(const cv::_InputArray& in_image, const cv::_InputArr
     // cv::Mat descriptors1;
 
     // // 파일에서 디스크립터 읽기
-    // std::ifstream file("/home/suhyun/lib/stella_vslam_examples/build/split_square_str/des/"+to_string(num_f)+".txt");
-    // if (file.is_open()) {
-    //     std::string line;
-    //     while (std::getline(file, line)) {
-    //         std::istringstream iss(line);
-    //         std::vector<uint8_t> binary_descriptor;
+    std::ifstream file("/home/suhyun/lib/stella_vslam_examples/build/split_square_str/des/"+to_string(num_f)+".txt");
+    if (file.is_open()) {
+        std::string line;
+        while (std::getline(file, line)) {
+            std::istringstream iss(line);
+            std::vector<uint8_t> binary_descriptor;
 
-    //         // 스페이스를 기준으로 문자열 분리
-    //         while (!iss.eof()) {
-    //             std::string value;
-    //             iss >> value;
+            // 스페이스를 기준으로 문자열 분리
+            while (!iss.eof()) {
+                std::string value;
+                iss >> value;
 
-    //             // 2진수 문자열을 10진수로 변환하여 저장
-    //             int decimal_value = std::stoi(value, 0, 2);
-    //             binary_descriptor.push_back(static_cast<uint8_t>(decimal_value));
-    //         }
-    //         descriptors1.push_back(binary_descriptor);
-    //     }
-    //     file.close();
-    // } else {
-    //     std::cerr << "Descriptor 파일 열기 실패" << std::endl;
-    // }
+                // 2진수 문자열을 10진수로 변환하여 저장
+                int decimal_value = std::stoi(value, 0, 2);
+                binary_descriptor.push_back(static_cast<uint8_t>(decimal_value));
+            }
+            descriptors1.push_back(binary_descriptor);
+        }
+        file.close();
+    } else {
+        std::cerr << "Descriptor 파일 열기 실패" << std::endl;
+    }
 
-    // std::ifstream file_k("/home/suhyun/lib/stella_vslam_examples/build/split_square_str/key/"+to_string(num_f)+".txt"); // {}.txt 파일을 연다. 없으면 생성. 
-    // // spdlog::info(" Keypoint Time");
-    //     // 각 라인에 대해 처리
-    //     std::string line;
-    //     while (std::getline(file_k, line)) {
+    std::ifstream file_k("/home/suhyun/lib/stella_vslam_examples/build/split_square_str/key/"+to_string(num_f)+".txt"); // {}.txt 파일을 연다. 없으면 생성. 
+    // spdlog::info(" Keypoint Time");
+        // 각 라인에 대해 처리
+        std::string line;
+        while (std::getline(file_k, line)) {
     
-    //         std::istringstream ss(line);
-    //         std::string token;
+            std::istringstream ss(line);
+            std::string token;
 
-    //         // 쉼표(,)를 기준으로 문자열을 분리하여 정보 추출
-    //         std::vector<std::string> tokens;
-    //         while (std::getline(ss, token, ',')) {
-    //             tokens.push_back(token);
-    //         }
-    //         // 필요한 정보 추출하여 KeyPoint 객체 생성
-    //         if (tokens.size() == 6) {
-    //             cv::KeyPoint keyPoint;
-    //             // Token 미리 보기
-    //             keyPoint.pt = cv::Point2f(std::stof(tokens[0]), std::stof(tokens[1]));
-    //             keyPoint.size = std::stof(tokens[2]);
-    //             keyPoint.angle = std::stof(tokens[3]);
-    //             keyPoint.response = std::stof(tokens[4]);
-    //             keyPoint.octave = std::stoi(tokens[5]);// 생성된 KeyPoint 객체를 컨테이너에 추가
-    //             keypts.push_back(keyPoint);
-    //         } else {
-    //             spdlog::warn("Invalid line format: {}", line);
-    //         }
-    //     }
-    //     file_k.close();
+            // 쉼표(,)를 기준으로 문자열을 분리하여 정보 추출
+            std::vector<std::string> tokens;
+            while (std::getline(ss, token, ',')) {
+                tokens.push_back(token);
+            }
+            // 필요한 정보 추출하여 KeyPoint 객체 생성
+            if (tokens.size() == 6) {
+                cv::KeyPoint keyPoint;
+                // Token 미리 보기
+                keyPoint.pt = cv::Point2f(std::stof(tokens[0]), std::stof(tokens[1]));
+                keyPoint.size = std::stof(tokens[2]);
+                keyPoint.angle = std::stof(tokens[3]);
+                keyPoint.response = std::stof(tokens[4]);
+                keyPoint.octave = std::stoi(tokens[5]);// 생성된 KeyPoint 객체를 컨테이너에 추가
+                keypts.push_back(keyPoint);
+            } else {
+                spdlog::warn("Invalid line format: {}", line);
+            }
+        }
+        file_k.close();
         spdlog::info("Frame number={}", num_f);
         // # // # // # // # // # // # // # // # // # // # // # // # 
     num_f++;
